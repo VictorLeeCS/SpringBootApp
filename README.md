@@ -8,7 +8,6 @@ A full-stack web application built with **Spring Boot** and **React** that provi
 - **Item Management**: Create, read, update, and delete items
 - **Responsive UI**: Modern React frontend with real-time updates
 - **Database Integration**: PostgreSQL database with JPA/Hibernate
-- **RESTful API**: Clean REST endpoints for frontend-backend communication
 
 ## 🛠️ Tech Stack
 
@@ -56,3 +55,12 @@ brew services start postgresql
 
 # Run Spring Boot application
 mvn spring-boot:run
+
+#Navigate to the front end directory
+cd frontEnd/react_app
+
+#Run front end
+npm run dev
+
+#Front end is serve on port 3000
+
