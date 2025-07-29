@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 
 function Login() {
@@ -7,6 +8,14 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/AfterLogin");
+    }
+  }, [isAuthenticated, navigate]);
 
  const handleLogin = async (e) => {
    e.preventDefault();
@@ -20,12 +29,14 @@ function Login() {
        headers: {
          "Content-Type": "application/json"
        },
+       credentials: 'include', // Include session cookies
        body: JSON.stringify(credentials)
      });
 
      if (response.ok) {
        setUsername("");
        setPassword("");
+       login(); // Update authentication state
        alert("Login successful!");
        navigate("/AfterLogin");
      } else if (response.status === 401) {

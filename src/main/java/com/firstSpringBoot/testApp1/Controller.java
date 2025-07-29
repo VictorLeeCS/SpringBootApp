@@ -15,6 +15,7 @@ public class Controller {
 
     @GetMapping("/items")
     public List<Item> getAllItems() {
+        System.out.println("\n we made it here \n");
         return repo.findAll();
     }
 
@@ -47,5 +48,10 @@ public class Controller {
     @PostMapping("/addItem")
     public void addItem(@RequestBody Item item) {
         repo.save(item);
+    }
+
+    @GetMapping("/auth/status")
+    public String getAuthStatus() {
+        return "authenticated";
     }
 }

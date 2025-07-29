@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 function AfterLogin() {
 
   const [items, setItems] = useState([]);
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   // Fetch all items
   const fetchItems = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/items`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/items`, {
+        credentials: 'include' // Include session cookies
+      });
       const data = await res.json();
       setItems(data);
     } catch (err) {
@@ -23,11 +27,20 @@ function AfterLogin() {
   // Delete item
   const handleDelete = async (id) => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/items/${id}`, { method: "DELETE" });
+      await fetch(`${import.meta.env.VITE_API_URL}/items/${id}`, { 
+        method: "DELETE",
+        credentials: 'include' // Include session cookies
+      });
       fetchItems();
     } catch (err) {
       console.error("Failed to delete item", err);
     }
+  };
+
+  // Handle logout
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
   };
 
   const ASingleItem = (props) => {
@@ -64,6 +77,7 @@ function AfterLogin() {
                 </a>
                     <div className="btn-group" role="group">
                       <button type="button" className="btn btn-primary" onClick={() => navigate("/additem")}>Add item</button>
+                      <button type="button" className="btn btn-outline-light" onClick={handleLogout}>Logout</button>
                     </div>
               </div>
             </div>

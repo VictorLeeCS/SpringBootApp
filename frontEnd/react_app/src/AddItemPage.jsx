@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 function AddItemPage() {
   const [productName, setProductName] = useState("");
@@ -7,6 +8,7 @@ function AddItemPage() {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +24,7 @@ function AddItemPage() {
         headers: {
           "Content-Type": "application/json"
         },
+        credentials: 'include', // Include session cookies
         body: JSON.stringify(item)
       });
       // Optionally clear form or redirect
@@ -33,6 +36,12 @@ function AddItemPage() {
     } catch (error) {
       alert("Error adding item");
     }
+  };
+
+  // Handle logout
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
   };
 
   return (
@@ -49,10 +58,11 @@ function AddItemPage() {
                   </a>
                   <div className="btn-group" role="group">
                     <button type="button" className="btn btn-primary" onClick={() => navigate("/AfterLogin")}>All items</button>
+                    <button type="button" className="btn btn-outline-light" onClick={handleLogout}>Logout</button>
                   </div>
-            </div>
-          </div>
-        </header>
+                </div>
+              </div>
+          </header>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh",backgroundColor: "grey"  }}>
             <div className="card" style={{ width: "40rem" }}>
               <form style={{ padding: "2rem" }} onSubmit={handleSubmit}>
