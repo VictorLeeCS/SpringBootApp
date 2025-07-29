@@ -62,5 +62,5 @@ cd frontEnd/react_app
 #Run front end
 npm run dev
 
-#Front end is serve on port 3000
+#Front end is served on port 3000
 
